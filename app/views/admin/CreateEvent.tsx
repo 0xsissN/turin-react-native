@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/ticket";
+const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/event";
 
 export default function CreateEvent() {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function CreateEvent() {
       !price.trim() ||
       !description.trim()
     ) {
-      alert("Error creando ticket");
+      alert("Error creando evento");
       return;
     }
 
@@ -38,51 +38,65 @@ export default function CreateEvent() {
       });
       router.back();
     } catch (error) {
-      console.error("Error creando ticket:", error);
+      console.error("Error creando evento:", error);
     }
   };
 
   return (
-    <View>
-      <Text className="text-lg font-bold">Crear Ticket</Text>
+    <ScrollView className="p-4 bg-black">
+      <Text className="text-2x1 font-bold text-white mb-6 text-lg">Crear Evento</Text>
       <TextInput
         placeholder="Nombre del evento"
+        placeholderTextColor="#999"
         value={eventName}
         onChangeText={setEventName}
-        className="border p-2 my-2"
+        className="bg-gray-800 p-3 rounded-lg text-white mb-4"
       />
       <TextInput
-        placeholder="Fecha"
+        placeholder="Fecha (DD/MM/YYYY)"
+        placeholderTextColor="#999"
         value={date}
         onChangeText={setDate}
-        className="border p-2 my-2"
+        className="bg-gray-800 p-3 rounded-lg text-white mb-4"
       />
       <TextInput
         placeholder="Precio"
+        placeholderTextColor="#999"
         value={price}
         onChangeText={setPrice}
-        className="border p-2 my-2"
+        keyboardType="numeric"
+        className="bg-gray-800 p-3 rounded-lg text-white mb-4"
       />
       <TextInput
         placeholder="URL de Imagen"
+        placeholderTextColor="#999"
         value={imageUrl}
         onChangeText={setImageUrl}
-        className="border p-2 my-2"
+        className="bg-gray-800 p-3 rounded-lg text-white mb-4"
       />
       <TextInput
         placeholder="Descripción"
+        placeholderTextColor="#999"
         value={description}
         onChangeText={setDescription}
-        className="border p-2 my-2"
+        multiline
+        numberOfLines={4}
+        className="bg-gray-800 p-3 rounded-lg text-white mb-4"
       />
 
       <TouchableOpacity
         onPress={createTicket}
-        className="bg-green-500 p-3 rounded-lg mt-4"
+        className="bg-purple-600 py-3 rounded-lg items-center"
       >
-        <Text className="text-white text-center">Guardar</Text>
+        <Text className="text-white font-bold text-lg">Guardar Evento</Text>
       </TouchableOpacity>
-    </View>
+      <TouchableOpacity
+        className="mt-6 bg-gray-700 py-3 rounded-lg items-center"
+        onPress={() => router.push("./AdminHome")}
+      >
+        <Text className="text-white font-bold text-lg">Regresar</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 

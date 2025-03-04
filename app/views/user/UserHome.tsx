@@ -4,7 +4,7 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
-const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/ticket";
+const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/event";
 
 export default function UserHome() {
   const [events, setEvent] = useState<Event[]>([]);
@@ -15,7 +15,7 @@ export default function UserHome() {
       const data = await res.json();
       setEvent(data);
     } catch (error) {
-      console.error("Error obteniendo ticket:", error);
+      console.error("Error obteniendo evento:", error);
     }
   };
 
@@ -26,13 +26,13 @@ export default function UserHome() {
   );
 
   return (
-    <View className="flex-1 p-3 bg-black">
-      <Text className="text-4xl font-bold text-white mb-4">Eventos</Text>
+    <View className="flex-1 p-5 bg-black">
+      <Text className="text-4xl font-bold text-white mb-6">Eventos</Text>
       <FlatList
         data={events}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <EventCardUser event={item} />}
-        className="px-6"
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );
