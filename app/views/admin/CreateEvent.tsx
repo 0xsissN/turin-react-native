@@ -4,7 +4,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/ticket";
 
-export default function CreateTicket() {
+export default function CreateEvent() {
   const router = useRouter();
   const [eventName, setEventName] = useState("");
   const [date, setDate] = useState("");

@@ -1,5 +1,5 @@
-import TicketCardUser from "@/app/components/user/TicketCardUser";
-import { Ticket } from "@/app/types";
+import EventCardUser from "@/app/components/user/EventCardUser";
+import { Event } from "@/app/types";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Text, View } from "react-native";
@@ -7,13 +7,13 @@ import { FlatList, Text, View } from "react-native";
 const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/ticket";
 
 export default function UserHome() {
-  const [tickets, setTicket] = useState<Ticket[]>([]);
+  const [events, setEvent] = useState<Event[]>([]);
 
-  const getTicket = async () => {
+  const getEvent = async () => {
     try {
       const res = await fetch(API);
       const data = await res.json();
-      setTicket(data);
+      setEvent(data);
     } catch (error) {
       console.error("Error obteniendo ticket:", error);
     }
@@ -21,7 +21,7 @@ export default function UserHome() {
 
   useFocusEffect(
     useCallback(() => {
-      getTicket();
+      getEvent();
     }, [])
   );
 
@@ -29,12 +29,11 @@ export default function UserHome() {
     <View className="flex-1 p-3 bg-black">
       <Text className="text-4xl font-bold text-white mb-4">Eventos</Text>
       <FlatList
-        data={tickets}
+        data={events}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <TicketCardUser ticket={item} />}
+        renderItem={({ item }) => <EventCardUser event={item} />}
         className="px-6"
       />
     </View>
   );
 }
-

@@ -1,5 +1,5 @@
-import TicketCardAdmin from "@/app/components/admin/TicketCardAdmin";
-import { Ticket } from "@/app/types";
+import EventCardAdmin from "@/app/components/admin/EventCardAdmin";
+import { Event } from "@/app/types";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Text, View } from "react-native";
@@ -7,47 +7,51 @@ import { FlatList, Text, View } from "react-native";
 const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/ticket";
 
 export default function AdminHome() {
-  const [tickets, setTicket] = useState<Ticket[]>([]);
+  const [events, setEvent] = useState<Event[]>([]);
 
-  const getTicket = async () => {
+  const getEvent = async () => {
     try {
       const res = await fetch(API);
       const data = await res.json();
-      setTicket(data);
+      setEvent(data);
     } catch (error) {
-      console.error("Error obteniendo ticket:", error);
+      console.error("Error obteniendo evento:", error);
     }
   };
 
-  const deleteTicket = async (id: number) => {
+  const deleteEvent = async (id: number) => {
     try {
       await fetch(`${API}/${id}`, { method: "DELETE" });
-      setTicket(tickets.filter((ticket) => ticket.id !== id));
+      setEvent(events.filter((event) => event.id !== id));
     } catch (error) {
-      console.error("Error eliminando ticket:", error);
+      console.error("Error eliminando evento:", error);
     }
   };
 
   useFocusEffect(
     useCallback(() => {
-      getTicket();
+      getEvent();
     }, [])
   );
 
   return (
     <View className="flex-1 p-3 bg-black">
       <Text className="text-4xl font-bold text-white mb-4">Eventos</Text>
+      <Link href={"./CreateEvent"} className="bg-green-500 p-3 rounded-lg mb-4">
+        <Text className="text-white text-center">Agregar Evento</Text>
+      </Link>
       <Link
-        href={"/views/admin/CreateTicket"}
+        href={"./StadisticsEvent"}
         className="bg-green-500 p-3 rounded-lg mb-4"
       >
-        <Text className="text-white text-center">Agregar Ticket</Text>
+        <Text className="text-white text-center">Stats</Text>
       </Link>
+
       <FlatList
-        data={tickets}
+        data={events}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TicketCardAdmin ticket={item} onDelete={deleteTicket} />
+          <EventCardAdmin event={item} onDelete={deleteEvent} />
         )}
         scrollEnabled={false}
         className="px-6"
