@@ -1,8 +1,14 @@
+import { Singleton } from "@/app/patterns/Singleton";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 
-const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/event";
+const single = Singleton.getInstance();
 
 export default function CreateEvent() {
   const router = useRouter();
@@ -30,8 +36,9 @@ export default function CreateEvent() {
       imageUrl: imageUrl,
       description,
     };
+
     try {
-      await fetch(API, {
+      await fetch(single.API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(new_ticket),
@@ -44,7 +51,9 @@ export default function CreateEvent() {
 
   return (
     <ScrollView className="p-4 bg-black">
-      <Text className="text-2x1 font-bold text-white mb-6 text-lg">Crear Evento</Text>
+      <Text className="text-2x1 font-bold text-white mb-6 text-lg">
+        Crear Evento
+      </Text>
       <TextInput
         placeholder="Nombre del evento"
         placeholderTextColor="#999"
@@ -99,4 +108,3 @@ export default function CreateEvent() {
     </ScrollView>
   );
 }
-

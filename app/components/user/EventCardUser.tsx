@@ -1,12 +1,25 @@
 import { EventUser } from "@/app/types";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function EventCardUser({ event }: EventUser) {
+  const route = useRouter();
+
+  const handleTicket = () => {
+    route.push({
+      pathname: "../../views/user/BuyTickets",
+      params: { event: JSON.stringify(event) },
+    });
+  };
+
   return (
     <View className="bg-gray rounded-2x1 shadow-lg overflow-hidden shadow-purple-500/50 my-3">
       <Image
-        source={require("../../../assets/images/profile.png")}
+        source={
+          event.image_url
+            ? { uri: event.image_url }
+            : require("../../../assets/images/background_profile.png")
+        }
         className="w-full h-48"
         resizeMode="cover"
       />
@@ -20,11 +33,12 @@ export default function EventCardUser({ event }: EventUser) {
           {event.price}
         </Text>
         <Text className="text-gray-300 text-sm mb-4">{event.description}</Text>
-        <Link href={"../../views/user/BuyTickets"} asChild>
-          <TouchableOpacity className="bg-purple-600 py-1 rounded-lg items-center">
-            <Text className="text-white font-bold text-lg p-2">Comprar</Text>
-          </TouchableOpacity>
-        </Link>
+        <TouchableOpacity
+          className="bg-purple-600 py-1 rounded-lg items-center"
+          onPress={handleTicket}
+        >
+          <Text className="text-white font-bold text-lg p-2">Comprar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

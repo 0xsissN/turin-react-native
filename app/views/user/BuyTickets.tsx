@@ -1,23 +1,24 @@
-import { Logger, Stadistics } from "@/app/patterns/Observer";
 import { GeneratorTicket } from "@/app/services/GeneratorTicket";
 import { useStadistics } from "@/app/StadisticsContext";
-import { Link, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function BuyTickets() {
   const [ticket, setTicket] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>([]);
   const router = useRouter();
 
+  const { event } = useLocalSearchParams();
+  const parsedEvent = JSON.parse(event as string);
+
   const stats = useStadistics();
 
   const generator = new GeneratorTicket();
-  generator.addObserver(new Logger());
   generator.addObserver(stats);
 
   const handleTicket = (type: string) => {
-    const new_ticket = generator.createTicket(type);
+    const new_ticket = generator.createTicket(type, parsedEvent);
     setTicket(new_ticket.details());
     setLogs((prevLogs) => [
       ...prevLogs,

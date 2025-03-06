@@ -1,10 +1,11 @@
 import EventCardAdmin from "@/app/components/admin/EventCardAdmin";
+import { Singleton } from "@/app/patterns/Singleton";
 import { Event } from "@/app/types";
-import { Link, useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
-const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/event";
+const single = Singleton.getInstance();
 
 export default function AdminHome() {
   const [events, setEvent] = useState<Event[]>([]);
@@ -12,7 +13,7 @@ export default function AdminHome() {
 
   const getEvent = async () => {
     try {
-      const res = await fetch(API);
+      const res = await fetch(single.API);
       const data = await res.json();
       setEvent(data);
     } catch (error) {
@@ -22,7 +23,7 @@ export default function AdminHome() {
 
   const deleteEvent = async (id: number) => {
     try {
-      await fetch(`${API}/${id}`, { method: "DELETE" });
+      await fetch(`${single.API}/${id}`, { method: "DELETE" });
       setEvent(events.filter((event) => event.id !== id));
     } catch (error) {
       console.error("Error eliminando evento:", error);

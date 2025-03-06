@@ -7,7 +7,11 @@ export default function EventCardAdmin({ event, onDelete }: EventAdmin) {
   return (
     <View className="bg-gray rounded-2x1 shadow-lg overflow-hidden shadow-purple-500/50 my-3">
       <Image
-        source={require("../../../assets/images/profile.png")}
+        source={
+          event.image_url
+            ? { uri: event.image_url }
+            : require("../../../assets/images/background_profile.png")
+        }
         className="w-full h-48"
         resizeMode="cover"
       />

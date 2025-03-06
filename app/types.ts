@@ -19,9 +19,15 @@ export interface EventUser {
 export interface Ticket{
   type: string
   price: number
+  event: Event
   details(): string
 }
 
 export interface Observer{
   update(ticket: Ticket): void
+}
+
+export interface IObserver{
+  addObserver(obs: Observer): void
+  notifiObservers(ticket: Ticket): void
 }

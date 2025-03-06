@@ -1,3 +1,4 @@
+import { Singleton } from "@/app/patterns/Singleton";
 import { Event } from "@/app/types";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -9,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/event";
+const single = Singleton.getInstance();
 
 export default function EditEvent() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -27,7 +28,7 @@ export default function EditEvent() {
   useEffect(() => {
     const getEvent = async () => {
       try {
-        const res = await fetch(`${API}/${id}`);
+        const res = await fetch(`${single.API}/${id}`);
         const data = await res.json();
         setEvent(data);
       } catch (error) {
@@ -40,7 +41,7 @@ export default function EditEvent() {
 
   const save = async () => {
     try {
-      const res = await fetch(`${API}/${id}`, {
+      const res = await fetch(`${single.API}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

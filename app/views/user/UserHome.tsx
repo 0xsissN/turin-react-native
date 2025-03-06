@@ -1,17 +1,18 @@
 import EventCardUser from "@/app/components/user/EventCardUser";
+import { Singleton } from "@/app/patterns/Singleton";
 import { Event } from "@/app/types";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
-const API = "https://67c4a4fcc4649b9551b4358e.mockapi.io/event";
+const single = Singleton.getInstance()
 
 export default function UserHome() {
   const [events, setEvent] = useState<Event[]>([]);
 
   const getEvent = async () => {
     try {
-      const res = await fetch(API);
+      const res = await fetch(single.API);
       const data = await res.json();
       setEvent(data);
     } catch (error) {
